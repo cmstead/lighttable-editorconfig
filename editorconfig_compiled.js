@@ -1,8 +1,3 @@
-if(!lt.util.load.provided_QMARK_('test.main')) {
-goog.provide('test.main');
-goog.require('cljs.core');
-cljs.core.keys.call(null,test.main.ns_publics.call(null,new cljs.core.Symbol(null,"lt.objs.editor","lt.objs.editor",-1304303726,null)));
-}
 if(!lt.util.load.provided_QMARK_('lt.plugins.editorconfig')) {
 goog.provide('lt.plugins.editorconfig');
 goog.require('cljs.core');
@@ -49,9 +44,9 @@ lt.plugins.editorconfig.apply_config = (function apply_config(config){return lt.
 /**
 * Main execution for editorconfig behavior
 */
-lt.plugins.editorconfig.editorconfig_main = (function editorconfig_main(this$){var ecpromise = lt.plugins.editorconfig.parse.call(null,new cljs.core.Keyword(null,"pwd","pwd",1014015663).cljs$core$IFn$_invoke$arity$1(this$));return ecpromise.then(lt.plugins.editorconfig.apply_config);
+lt.plugins.editorconfig.editorconfig_main = (function editorconfig_main(info,client_path){var ecpromise = client_path;return ecpromise.then(lt.plugins.editorconfig.apply_config);
 });
-lt.object.behavior_STAR_.call(null,new cljs.core.Keyword("lt.plugins.editorconfig","eval!","lt.plugins.editorconfig/eval!",3034938654),new cljs.core.Keyword("lt.plugins.editorconfig","reaction","lt.plugins.editorconfig/reaction",1783229954),(function (p1__7909_SHARP_){return lt.plugins.editorconfig.apply_on_eval.call(null,p1__7909_SHARP_);
+lt.object.behavior_STAR_.call(null,new cljs.core.Keyword("lt.plugins.editorconfig","eval!","lt.plugins.editorconfig/eval!",3034938654),new cljs.core.Keyword("lt.plugins.editorconfig","reaction","lt.plugins.editorconfig/reaction",1783229954),(function (p1__7860_SHARP_){return lt.plugins.editorconfig.editorconfig_main.call(null,p1__7860_SHARP_);
 }),new cljs.core.Keyword("lt.plugins.editorconfig","triggers","lt.plugins.editorconfig/triggers",1494517656),new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"eval.one","eval.one",1173589382),null,new cljs.core.Keyword(null,"eval","eval",1017029646),null], null), null));
 lt.object.object_STAR_.call(null,new cljs.core.Keyword("lt.plugins.editorconfig","editorconfig","lt.plugins.editorconfig/editorconfig",3669379276),new cljs.core.Keyword(null,"tags","tags",1017456523),cljs.core.PersistentHashSet.EMPTY,new cljs.core.Keyword(null,"behaviors","behaviors",607554515),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword("lt.plugins.editorconfig","eval!","lt.plugins.editorconfig/eval!",3034938654)], null),new cljs.core.Keyword(null,"triggers","triggers",2516997421),new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"eval!","eval!",1110791799),null], null), null));
 lt.plugins.editorconfig.editorconfig = lt.object.create.call(null,new cljs.core.Keyword("lt.plugins.editorconfig","editorconfig","lt.plugins.editorconfig/editorconfig",3669379276));

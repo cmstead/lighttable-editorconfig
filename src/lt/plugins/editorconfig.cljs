@@ -44,14 +44,15 @@
 ;;I get stuck here because I don't know how to get the current directory
 (defn editorconfig-main
   "Main execution for editorconfig behavior"
-  [this]
-  (let [ecpromise (parse (:pwd this))]
+  [info client-path]
+  (let [ecpromise client-path]
     (.then ecpromise apply-config)))
+
 
 
 (behavior ::eval!
           ::triggers #{:eval :eval.one}
-          ::reaction #(apply-on-eval %))
+          ::reaction #(editorconfig-main %))
 
 
 (object/object* ::editorconfig
