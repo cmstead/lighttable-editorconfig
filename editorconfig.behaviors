@@ -1,4 +1,2 @@
-[
- [:app :lt.objs.plugins/load-js "editorconfig_compiled.js"]
- [:editorconfig.hello :lt.plugins.editorconfig/on-close-destroy]
- ]
+{:+ {:app [(:lt.objs.plugins/load-js ["editorconfig_compiled.js"])]
+     :editor.editorconfig [:lt.plugins.editorconfig/on-eval]}}

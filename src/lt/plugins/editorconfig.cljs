@@ -1,31 +1,63 @@
 (ns lt.plugins.editorconfig
   (:require [lt.object :as object]
             [lt.objs.tabs :as tabs]
-            [lt.objs.command :as cmd])
+            [lt.objs.command :as cmd]
+            [lt.objs.context :as ctxt]
+            [lt.objs.editor :as editor]
+            [lt.objs.files :as files]
+            [lt.objs.plugins :as plugins])
   (:require-macros [lt.macros :refer [defui behavior]]))
 
-(defui hello-panel [this]
-  [:h1 "Hello from editorconfig"])
 
-(object/object* ::editorconfig.hello
-                :tags [:editorconfig.hello]
-                :behaviors [::on-close-destroy]
-                :name "editorconfig"
-                :init (fn [this]
-                        (hello-panel this)))
+(defn js-require
+  "Allow for node-style requires from the local node_modules directory"
+  [module-path]
+  (js/require (files/join plugins/user-plugins-dir module-path)))
 
-(behavior ::on-close-destroy
-          :triggers #{:close}
-          :desc "editorconfig: Close tab and tabset as well if last tab"
-          :reaction (fn [this]
-                      (when-let [ts (:lt.objs.tabs/tabset @this)]
-                        (when (= (count (:objs @ts)) 1)
-                          (tabs/rem-tabset ts)))
-                      (object/raise this :destroy)))
 
-(def hello (object/create ::editorconfig.hello))
+;;Require editorconfig like we would in any node program
+(def editorconfig (js-require "editorconfig/node_modules/editorconfig"))
 
-(cmd/command {:command ::say-hello
-              :desc "editorconfig: Say Hello"
-              :exec (fn []
-                      (tabs/add-or-focus! hello))})
+
+;;For better or worse this returns a promise which we will have to deal with
+(defn parse [file-path] (.parse editorconfig file-path))
+
+
+(defn apply-indent
+  "Applies tab settings"
+  [indent-settings]
+  (if-let [index-size (:indent-size indent-settings)]
+    (editor/tab-settings false indent-size indent-size)
+    (when (= "tab" (:indent-style indent-settings))
+      (editor/tab-settings true))))
+
+
+;;Currently Light Table only supports indent size and style
+(defn apply-config
+  "Apply the settings from the editorconfig file to the editor environment"
+  [config]
+  (apply-indent #{:indent-style (:indent_style config)
+                  :indent-size (:indent_size config)}))
+
+
+;;TODO: Figure out how to get the correct path if it isn't (:pwd this)
+;;I get stuck here because I don't know how to get the current directory
+(defn editorconfig-main
+  "Main execution for editorconfig behavior"
+  [this]
+  (let [ecpromise (parse (:pwd this))]
+    (.then ecpromise apply-config)))
+
+
+(behavior ::eval!
+          ::triggers #{:eval :eval.one}
+          ::reaction #(apply-on-eval %))
+
+
+(object/object* ::editorconfig
+                :tags #{}
+                :behaviors [::eval!]
+                :triggers #{:eval!})
+
+
+(def editorconfig (object/create ::editorconfig))

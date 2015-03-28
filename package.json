@@ -1,0 +1,8 @@
+{
+  "name": "ltEditorconfig",
+  "description": "Editorconfig plugin for Light Table",
+  "version": "1.0.0-alpha",
+  "dependencies": {
+    "editorconfig": "^0.12.2"
+  }
+}
